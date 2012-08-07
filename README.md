@@ -8,8 +8,10 @@ Powerful, expressive pattern matching for data structures
 
 Perhaps an example would be illustrative?
 
+    var JSONExp = require('jsonexp')
+
     // Need to find a 30-year-old male from Berlin
-    var test = JSONExp('{ "name": [NAME], "male": false, "age": 30, "home": "Berlin", ... }')
+    var test = JSONExp('{ "name": [NAME], "male": true, "age": 30, "home": "Berlin", ... }')
 
     var people = [
         { name: "Bob", male: true, age: 42, home: "San Francisco", lame: true },
@@ -18,13 +20,13 @@ Perhaps an example would be illustrative?
 
     people.forEach(function(p) {
         console.log(test(p))
-    }
+    })
 
 The output of this would be:
 
     null
     null
-    { NAME: "Jim" }
+    { NAME: 'Jim' }
 
 ## License
 
