@@ -1,4 +1,4 @@
-# JSONExp
+# JSONExp [![build status](https://secure.travis-ci.org/agnoster/jsonexp.png)](http://travis-ci.org/agnoster/jsonexp)
 
 Powerful, expressive pattern matching for data structures
 
