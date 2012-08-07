@@ -1,0 +1,23 @@
+{
+  "name": "jsonexp",
+  "version": "0.0.1",
+  "description": "RegExp for JSON - powerful, expressive pattern matching for data structures",
+  "main": "lib/",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": "",
+  "keywords": [
+    "json",
+    "pattern",
+    "match"
+  ],
+  "devDependencies": {
+    "vows": "*"
+  },
+  "author": "Isaac Wolkerstorfer <agnoster@gmail.com>",
+  "license": "MIT"
+}
