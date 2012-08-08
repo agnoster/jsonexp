@@ -28,6 +28,8 @@ The output of this would be:
     null
     { NAME: 'Jim' }
 
+For more information, see the [docs][].
+
 ## License
 
 MIT License, fork away and contribute back! Use GH Issues and Pull Requests for this purpose.
@@ -53,3 +55,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
+
+[docs]: https://github.com/agnoster/jsonexp/wiki/Documentation
