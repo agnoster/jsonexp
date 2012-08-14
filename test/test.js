@@ -1,6 +1,7 @@
 var JSONExp = require('../lib/')
   , vows = require('vows')
   , assert = require('assert')
+  , sugar = require('sugar')
 
 function test(src, pattern, cases) {
     var batch = {}
@@ -81,6 +82,11 @@ vows.describe('JSONExp')
         , '[5, 4, 3, 2, 1, 0]': {}
         , '[1, 0, 2]': null
         }
+))
+.addBatch(test(
+    '{ "foo": <date: 1 month ago> }', {
+      foo: Date.create('1 month ago').format('{yyyy}-{MM}-{dd}T{hh}:{mm}:{ss}{zzzz}')
+    }
 ))
 
 .export(module)
