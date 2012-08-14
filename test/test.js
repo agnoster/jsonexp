@@ -50,6 +50,40 @@ vows.describe('JSONExp')
     '{ "foo": "http://bar" }', { foo: "http://bar" }
 ))
 .addBatch(test(
+    '[1, 2]', [1, 2],
+        { '[1]': null
+        , '{"0": 1}': null
+        , '[1, 2]': {}
+        , '[2, 1]': null
+        , '[1, 2, 3]': null
+        }
+))
+.addBatch(test(
+    '[...]', [{ "$JSONExp MANY": true }],
+        { '[]': {}
+        , '["a"]': {}
+        , '["a", "b"]': {}
+        , '["a", "b", "c"]': {}
+        }
+))
+.addBatch(test(
+    '["a", "b", ...]', ["a", "b", { "$JSONExp MANY": true }],
+        { '["a"]': null
+        , '["a", "b"]': {}
+        , '["a", "b", "c"]': {}
+        , '["c", "a", "b"]': null
+        }
+))
+.addBatch(test(
+    '[..., 1, 0]', [{ "$JSONExp MANY": true }, 1, 0],
+        { '[1]': null
+        , '[1, 0]': {}
+        , '[2, 1, 0]': {}
+        , '[5, 4, 3, 2, 1, 0]': {}
+        , '[1, 0, 2]': null
+        }
+))
+.addBatch(test(
     '{ "foo": <date: 1 month ago> }', {
       foo: Date.create('1 month ago').format('{yyyy}-{MM}-{dd}T{hh}:{mm}:{ss}{zzzz}')
     }
