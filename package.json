@@ -1,6 +1,6 @@
 {
   "name": "jsonexp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "RegExp for JSON - powerful, expressive pattern matching for data structures",
   "main": "lib/",
   "directories": {
