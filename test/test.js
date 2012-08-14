@@ -48,6 +48,31 @@ vows.describe('JSONExp')
 .addBatch(test(
     '{ "foo": "http://bar" }', { foo: "http://bar" }
 ))
+.addBatch(test(
+    '[1, 2]', [1, 2],
+        { '[1]': null
+        , '{"0": 1}': null
+        , '[1, 2]': {}
+        , '[2, 1]': null
+        , '[1, 2, 3]': null
+        }
+))
+.addBatch(test(
+    '["a", "b", ...]', ["a", "b", { "$JSONExp MANY": true }],
+        { '["a"]': null
+        , '["a", "b"]': {}
+        , '["a", "b", "c"]': {}
+        , '["c", "a", "b"]': null
+        }
+))
+.addBatch(test(
+    '[..., 1, 0]', [{ "$JSONExp MANY": true }, 1, 0],
+        { '["a"]': null
+        , '["a", "b"]': {}
+        , '["a", "b", "c"]': {}
+        , '["c", "a", "b"]': null
+        }
+))
 
 .export(module)
     
