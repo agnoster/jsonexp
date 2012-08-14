@@ -58,6 +58,14 @@ vows.describe('JSONExp')
         }
 ))
 .addBatch(test(
+    '[...]', [{ "$JSONExp MANY": true }],
+        { '[]': {}
+        , '["a"]': {}
+        , '["a", "b"]': {}
+        , '["a", "b", "c"]': {}
+        }
+))
+.addBatch(test(
     '["a", "b", ...]', ["a", "b", { "$JSONExp MANY": true }],
         { '["a"]': null
         , '["a", "b"]': {}
@@ -67,10 +75,11 @@ vows.describe('JSONExp')
 ))
 .addBatch(test(
     '[..., 1, 0]', [{ "$JSONExp MANY": true }, 1, 0],
-        { '["a"]': null
-        , '["a", "b"]': {}
-        , '["a", "b", "c"]': {}
-        , '["c", "a", "b"]': null
+        { '[1]': null
+        , '[1, 0]': {}
+        , '[2, 1, 0]': {}
+        , '[5, 4, 3, 2, 1, 0]': {}
+        , '[1, 0, 2]': null
         }
 ))
 
