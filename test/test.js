@@ -47,6 +47,9 @@ vows.describe('JSONExp')
     '{ //This is a comment\n\t "foo": "bar" }', { foo: "bar" }
 ))
 .addBatch(test(
+    '//This is another comment\n\t{ "foo": "bar" }', { foo: "bar" }
+))
+.addBatch(test(
     '{ "foo": "http://bar" }', { foo: "http://bar" }
 ))
 .addBatch(test(
@@ -90,4 +93,4 @@ vows.describe('JSONExp')
 ))
 
 .export(module)
-    
+
