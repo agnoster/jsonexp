@@ -50,6 +50,10 @@ vows.describe('JSONExp')
     '//This is another comment\n\t{ "foo": "bar" }', { foo: "bar" }
 ))
 .addBatch(test(
+    '{\n   //This is another comment\n "bar": {\n  // Hi!\n "foo": "bar" }}',
+    {bar: { foo: "bar" }}
+))
+.addBatch(test(
     '{ "foo": "http://bar" }', { foo: "http://bar" }
 ))
 .addBatch(test(
