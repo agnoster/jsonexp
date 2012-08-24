@@ -47,6 +47,16 @@ vows.describe('JSONExp')
     '{ //This is a comment\n\t "foo": "bar" }', { foo: "bar" }
 ))
 .addBatch(test(
+    '//This is another comment\n\t{ "foo": "bar" }', { foo: "bar" }
+))
+.addBatch(test(
+    '{\n   //This is another comment\n "bar": {\n  // Hi!\n "foo": "bar" }}',
+    {bar: { foo: "bar" }}
+))
+.addBatch(test(
+  "{\n  \"param\": [\n    {\"value\": \"key\", \"othervalue\": \"otherkey\"},\n    // a comment here \n    {\"key\": \"value\", \"key2\": \"value2\", \"key3\": {}}\n  ],\n  \"value\": true\n}\n", {param: [{value: "key", othervalue: "otherkey"}, {key: "value", key2: "value2", key3: {}}], value: true}
+))
+.addBatch(test(
     '{ "foo": "http://bar" }', { foo: "http://bar" }
 ))
 .addBatch(test(
@@ -90,4 +100,3 @@ vows.describe('JSONExp')
 ))
 
 .export(module)
-    
