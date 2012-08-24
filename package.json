@@ -22,8 +22,9 @@
     "vows": "*"
   },
   "author": "Isaac Wolkerstorfer <agnoster@gmail.com>",
-  "contributors":
-  [ "Josep M. Bach <josep.m.bach@gmail.com>"
-  ]
+  "contributors": [
+    "Josep M. Bach <josep.m.bach@gmail.com>",
+    "Alex Koppel <alex@alexkoppel.com>"
+  ],
   "license": "MIT"
 }
