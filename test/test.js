@@ -3,16 +3,25 @@ var JSONExp = require('../lib/')
   , assert = require('assert')
   , sugar = require('sugar')
 
-function test(src, pattern, cases) {
+function test(src, cases) {
     var batch = {}
     var topic = {}
     topic.topic = function() { return new JSONExp(src) }
-    topic['Has correct pattern'] = function(exp) { assert.deepEqual(exp.pattern, pattern) }
     for (var c in cases) {
         if (!cases.hasOwnProperty(c)) continue
 
         topic["Matching " + c] = testCase(c, cases[c])
     }
+
+    batch[src] = topic
+    return batch
+}
+
+function testSame(src, cmp) {
+    var batch = {}
+    var topic = {}
+    topic.topic = function() { return new JSONExp(src) }
+    topic["is the same as: " + cmp] = function(exp) { assert.ok(exp.equals(new JSONExp(cmp))) }
 
     batch[src] = topic
     return batch
@@ -39,7 +48,7 @@ vows.describe('JSONExp')
   }
 })
 .addBatch(test(
-    '{ "foo": "bar" }', { foo: "bar" },
+    '{ "foo": "bar" }',
         { '{ "foo": "bar" }': {}
         , '{ "foo": "baz" }': null
         , '{ "for": "bar" }': null
@@ -48,7 +57,7 @@ vows.describe('JSONExp')
         }
 ))
 .addBatch(test(
-    '{ "foo": [FOO] }', { foo: { '$JSONExp CAPTURE': 'FOO' } },
+    '{ "foo": [FOO] }',
         { '{ "foo": "bar" }': { 'FOO': 'bar' }
         , '{ "foo": "baz" }': { 'FOO': 'baz' }
         , '{ "for": "bar" }': null
@@ -56,24 +65,28 @@ vows.describe('JSONExp')
         , 'null': null
         }
 ))
-.addBatch(test(
-    '{ //This is a comment\n\t "foo": "bar" }', { foo: "bar" }
+.addBatch(testSame(
+    '{ //This is a comment\n\t "foo": "bar" }',
+    '{ "foo": "bar" }'
 ))
-.addBatch(test(
-    '//This is another comment\n\t{ "foo": "bar" }', { foo: "bar" }
+.addBatch(testSame(
+    '//This is another comment\n\t{ "foo": "bar" }',
+    '{ "foo": "bar" }'
 ))
-.addBatch(test(
+.addBatch(testSame(
     '{\n   //This is another comment\n "bar": {\n  // Hi!\n "foo": "bar" }}',
-    {bar: { foo: "bar" }}
+    '{"bar": { "foo": "bar" }}'
+))
+.addBatch(testSame(
+  "{\n  \"param\": [\n    {\"value\": \"key\", \"othervalue\": \"otherkey\"},\n    // a comment here \n    {\"key\": \"value\", \"key2\": \"value2\", \"key3\": {}}\n  ],\n  \"value\": true\n}\n",
+  '{"param": [{"value": "key", "othervalue": "otherkey"}, {"key": "value", "key2": "value2", "key3": {}}], "value": true}'
+))
+.addBatch(testSame(
+    '{ "foo": "http://bar" }',
+    '{ "foo": "http://bar" }'
 ))
 .addBatch(test(
-  "{\n  \"param\": [\n    {\"value\": \"key\", \"othervalue\": \"otherkey\"},\n    // a comment here \n    {\"key\": \"value\", \"key2\": \"value2\", \"key3\": {}}\n  ],\n  \"value\": true\n}\n", {param: [{value: "key", othervalue: "otherkey"}, {key: "value", key2: "value2", key3: {}}], value: true}
-))
-.addBatch(test(
-    '{ "foo": "http://bar" }', { foo: "http://bar" }
-))
-.addBatch(test(
-    '[1, 2]', [1, 2],
+    '[1, 2]',
         { '[1]': null
         , '{"0": 1}': null
         , '[1, 2]': {}
@@ -82,7 +95,7 @@ vows.describe('JSONExp')
         }
 ))
 .addBatch(test(
-    '[...]', [{ "$JSONExp MANY": true }],
+    '[...]',
         { '[]': {}
         , '["a"]': {}
         , '["a", "b"]': {}
@@ -90,7 +103,7 @@ vows.describe('JSONExp')
         }
 ))
 .addBatch(test(
-    '["a", "b", ...]', ["a", "b", { "$JSONExp MANY": true }],
+    '["a", "b", ...]',
         { '["a"]': null
         , '["a", "b"]': {}
         , '["a", "b", "c"]': {}
@@ -98,7 +111,7 @@ vows.describe('JSONExp')
         }
 ))
 .addBatch(test(
-    '[..., 1, 0]', [{ "$JSONExp MANY": true }, 1, 0],
+    '[..., 1, 0]',
         { '[1]': null
         , '[1, 0]': {}
         , '[2, 1, 0]': {}
@@ -106,10 +119,8 @@ vows.describe('JSONExp')
         , '[1, 0, 2]': null
         }
 ))
-.addBatch(test(
-    '{ "foo": <date: 1 month ago> }', {
-      foo: Date.create('1 month ago').format('{yyyy}-{MM}-{dd}T{hh}:{mm}:{ss}{zzzz}')
-    }
+.addBatch(testSame(
+    '{ "foo": <date: 1 month ago> }',
+    '{ "foo": "' + Date.create('1 month ago').format('{yyyy}-{MM}-{dd}T{hh}:{mm}:{ss}{zzzz}') + '" }'
 ))
-
 .export(module)
