@@ -25,6 +25,19 @@ function testCase(json, expected) {
 }
 
 vows.describe('JSONExp')
+.addBatch({
+  "equals()": {
+    topic: function() { return new JSONExp('{ "foo": "bar", "bar": "foo" }') },
+    'return true for an equivalent JSONExp': function(exp) {
+      var equiv = new JSONExp('{"bar":"foo", "foo":"bar"}')
+      assert.isTrue(exp.equals(equiv))
+    },
+    'returns false for a different JSONExp': function(exp) {
+      var equiv = new JSONExp('{"bar":"foo"}')
+      assert.isFalse(exp.equals(equiv))
+    }
+  }
+})
 .addBatch(test(
     '{ "foo": "bar" }', { foo: "bar" },
         { '{ "foo": "bar" }': {}
