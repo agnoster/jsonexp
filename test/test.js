@@ -27,7 +27,7 @@ function testSame(src, cmp) {
 }
 
 function testCase(json, expected) {
-    var c = { topic: function(exp) { return exp(JSON.parse(json)) } }
+    var c = { topic: function(exp) { return exp.exec(JSON.parse(json)) } }
     c["Returns " + JSON.stringify(expected)] = function(match) { assert.deepEqual(match, expected) }
     return c
 }

@@ -19,7 +19,7 @@ Perhaps an example would be illustrative?
         { name: "Jim", male: true, age: 30, home: "Berlin", stoic: true }]
 
     people.forEach(function(p) {
-        console.log(test(p))
+        console.log(test.exec(p))
     })
 
 The output of this would be:
